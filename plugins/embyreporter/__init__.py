@@ -672,7 +672,7 @@ class EmbyReporter(_PluginBase):
                 continue
 
         logger.info(f"final index value = {index}")
-        if index > 0:
+        if index >= 0:
             save_path = "/public/report.jpg"
             if Path(save_path).exists():
                 Path.unlink(Path(save_path))
