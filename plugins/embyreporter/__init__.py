@@ -34,7 +34,7 @@ class EmbyReporter(_PluginBase):
     # 插件图标
     plugin_icon = "Pydiocells_A.png"
     # 插件版本
-    plugin_version = "1.7"
+    plugin_version = "1.8"
     # 插件作者
     plugin_author = "chnnhhh"
     # 作者主页
@@ -647,9 +647,11 @@ class EmbyReporter(_PluginBase):
                 # 绘制封面
                 cover = Image.open(BytesIO(data))
                 cover = cover.resize((108, 159))
+                logger.info("cover ok!")
                 bg.paste(cover, (73 + 145 * index, 379 + offset_y))
                 # 绘制 播放次数、影片名称
                 text = ImageDraw.Draw(bg)
+                logger.info(f"text ok! {text}")
                 if show_time:
                     self.draw_text_psd_style(text,
                                              (177 + 145 * index - font_count.getlength(
