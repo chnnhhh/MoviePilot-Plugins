@@ -27,7 +27,7 @@ cache = Cache()
 
 class EmbyReporter(_PluginBase):
     # 插件名称
-    plugin_name = "Emby观影报告"
+    plugin_name = "ChnnhhhEmby观影报告"
     # 插件描述
     plugin_desc = "推送Emby观影报告，需Emby安装Playback Report 插件。"
     # 插件图标
@@ -649,7 +649,8 @@ class EmbyReporter(_PluginBase):
                                               355 + offset_y),
                                              StringUtils.str_secends(int(duration)), font_count, 126)
                 self.draw_text_psd_style(text, (74 + 145 * index, 542 + font_offset_y + offset_y), name, temp_font, 126)
-            except Exception:
+            except Exception as e:
+                logger.error(f"caught Exception:{e}")
                 continue
 
         if index > 0:
