@@ -34,7 +34,7 @@ class EmbyReporter(_PluginBase):
     # 插件图标
     plugin_icon = "Pydiocells_A.png"
     # 插件版本
-    plugin_version = "1.8"
+    plugin_version = "1.9"
     # 插件作者
     plugin_author = "chnnhhh"
     # 作者主页
@@ -611,7 +611,7 @@ class EmbyReporter(_PluginBase):
                 tlen = len(t)
                 logger.info("tuple length:" + str(tlen))
                 if tlen != 6:
-                    logger.info(f"Failed to unpack tuple: {t}")
+                    logger.info(f"Failed to unpack tuple: {t}, index = {index}")
                     continue
                 user_id, item_id, item_type, name, count, duration = tuple(i)
                 # 图片获取，剧集主封面获取
@@ -620,6 +620,7 @@ class EmbyReporter(_PluginBase):
                     success, data = self.items(user_id, item_id)
                     if not success:
                         index -= 1
+                        logger.error("获取剧ID失败，index--")
                         continue
                     item_id = data["SeriesId"]
                 # 封面图像获取
@@ -627,9 +628,11 @@ class EmbyReporter(_PluginBase):
                 if not success:
                     if item_type != "Movie":
                         index -= 1
+                        logger.error("获取剧ID失败，index--")
                     continue
                 # 剧集Y偏移
                 if index >= 5:
+                    logger.info(f"剧集Y偏移 index = {index}")
                     index = 0
                     offset_y = 331
                 # 名称显示偏移
@@ -647,11 +650,11 @@ class EmbyReporter(_PluginBase):
                 # 绘制封面
                 cover = Image.open(BytesIO(data))
                 cover = cover.resize((108, 159))
-                logger.info("cover ok!")
+                logger.info(f"cover ok! index = {index}")
                 bg.paste(cover, (73 + 145 * index, 379 + offset_y))
                 # 绘制 播放次数、影片名称
                 text = ImageDraw.Draw(bg)
-                logger.info(f"text ok! {text}")
+                logger.info(f"text ok! {text}, index = {index}")
                 if show_time:
                     self.draw_text_psd_style(text,
                                              (177 + 145 * index - font_count.getlength(
@@ -659,6 +662,7 @@ class EmbyReporter(_PluginBase):
                                               355 + offset_y),
                                              StringUtils.str_secends(int(duration)), font_count, 126)
                 self.draw_text_psd_style(text, (74 + 145 * index, 542 + font_offset_y + offset_y), name, temp_font, 126)
+                logger.info(f"draw ok! index = {index}")
             except Exception as e:
                 logger.error(f"caught Exception:{e}")
                 print(str(e))
