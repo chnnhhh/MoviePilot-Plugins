@@ -11,6 +11,7 @@ from app.schemas import NotificationType
 from pathlib import Path
 
 import random
+import traceback
 from io import BytesIO
 from PIL import Image
 from PIL import ImageFont
@@ -33,7 +34,7 @@ class EmbyReporter(_PluginBase):
     # 插件图标
     plugin_icon = "Pydiocells_A.png"
     # 插件版本
-    plugin_version = "1.5"
+    plugin_version = "1.6"
     # 插件作者
     plugin_author = "chnnhhh"
     # 作者主页
@@ -651,6 +652,7 @@ class EmbyReporter(_PluginBase):
                 self.draw_text_psd_style(text, (74 + 145 * index, 542 + font_offset_y + offset_y), name, temp_font, 126)
             except Exception as e:
                 logger.error(f"caught Exception:{e}")
+                traceback.print_exc()
                 continue
 
         if index > 0:
