@@ -34,7 +34,7 @@ class EmbyReporter(_PluginBase):
     # 插件图标
     plugin_icon = "Pydiocells_A.png"
     # 插件版本
-    plugin_version = "1.6"
+    plugin_version = "1.7"
     # 插件作者
     plugin_author = "chnnhhh"
     # 作者主页
@@ -606,6 +606,9 @@ class EmbyReporter(_PluginBase):
             index += 1
             try:
                 # 榜单项数据
+                t = tuple(i)
+                logger.info("tuple length:" + str(len(t)))
+                logger.info(f"Failed to unpack tuple: {t}")
                 user_id, item_id, item_type, name, count, duration = tuple(i)
                 # 图片获取，剧集主封面获取
                 if item_type != "Movie":
@@ -652,7 +655,10 @@ class EmbyReporter(_PluginBase):
                 self.draw_text_psd_style(text, (74 + 145 * index, 542 + font_offset_y + offset_y), name, temp_font, 126)
             except Exception as e:
                 logger.error(f"caught Exception:{e}")
+                print(str(e))
                 traceback.print_exc()
+                tb_str = traceback.format_exc()
+                logger.error("tb_str"+tb_str)
                 continue
 
         if index > 0:
