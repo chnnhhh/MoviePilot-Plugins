@@ -601,14 +601,18 @@ class EmbyReporter(_PluginBase):
             exists_tvs = exists_tvs[:5]
 
         all_ranks = exists_movies + exists_tvs
+        logger.info(all_ranks)
         index, offset_y = (-1, 0)
         for i in all_ranks:
             index += 1
             try:
                 # 榜单项数据
                 t = tuple(i)
-                logger.info("tuple length:" + str(len(t)))
-                logger.info(f"Failed to unpack tuple: {t}")
+                tlen = len(t)
+                logger.info("tuple length:" + str(tlen))
+                if tlen != 6:
+                    logger.info(f"Failed to unpack tuple: {t}")
+                    continue
                 user_id, item_id, item_type, name, count, duration = tuple(i)
                 # 图片获取，剧集主封面获取
                 if item_type != "Movie":
@@ -661,6 +665,7 @@ class EmbyReporter(_PluginBase):
                 logger.error("tb_str"+tb_str)
                 continue
 
+        logger.info(f"final index value = {index}")
         if index > 0:
             save_path = "/public/report.jpg"
             if Path(save_path).exists():
